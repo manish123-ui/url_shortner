@@ -69,11 +69,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 DEBUG = True
 
-ALLOWED_HOSTS = ['your-railway-app.up.railway.app']
+# Allowed hosts for your Railway deployment
+ALLOWED_HOSTS = ['web-production-18a7.up.railway.app']
 
+# Trusted origins for CSRF protection
 CSRF_TRUSTED_ORIGINS = [
-    'https://your-railway-app.up.railway.app'
+    'https://web-production-18a7.up.railway.app'
 ]
+
 
 
 # Database
