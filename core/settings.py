@@ -69,7 +69,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['your-railway-app.up.railway.app']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://your-railway-app.up.railway.app'
+]
 
 
 # Database
