@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Shortiurl</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f3f5fc;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .left {
+      flex: 1;
+      background: #0b0c28;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .left h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .left p {
+      font-size: 16px;
+      opacity: 0.8;
+      max-width: 320px;
+    }
+
+    .mockup {
+      width: 280px;
+      height: 180px;
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .right {
+      flex: 1;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .form-box h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #222;
+    }
+
+    .form-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .form-box label {
+      font-size: 14px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .form-box .messages {
+      margin-bottom: 12px;
+    }
+
+    .form-box .messages .error {
+      color: #ef4444;
+    }
+
+    .form-box .messages .success {
+      color: #22c55e;
+    }
+
+    .form-box button.submit {
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .form-box .login-link {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .form-box .login-link a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left Panel -->
+    <div class="left">
+      <div class="mockup"></div>
+      <h1>Easy to use Dashboard</h1>
+      <p>Choose the best infrastructure service and get better control over your business.</p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right">
+      <div class="form-box">
+        <h2>Create Your Account</h2>
+
+        <!-- Django messages -->
+        <div class="messages">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        <form method="post">
+          {% csrf_token %}
+          <input type="text" name="username" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Email Address" required>
+          <input type="password" name="password1" placeholder="Password" required>
+          <input type="password" name="password2" placeholder="Confirm Password" required>
+          <label>
+            <input type="checkbox" name="terms" required> I agree to the Terms & Conditions
+          </label>
+          <button type="submit" class="submit">Register</button>
+        </form>
+        <p class="login-link">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

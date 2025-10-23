@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Left Section */
+    .left {
+      width: 50%;
+      background: #0f0933;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .left h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .left p {
+      max-width: 300px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    /* Right Section */
+    .right {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f9f9ff;
+    }
+
+    .form-container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    .form-container h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #4a6cf7;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .form-container button:hover {
+      background: #354bd4;
+    }
+
+    .form-container p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .form-container a {
+      color: #4a6cf7;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Left side -->
+  <div class="left">
+    <h1>Easy to use Dashboard</h1>
+    <p>Choose the best infrastructure service and get a brand-new control panel that is simple & intuitive.</p>
+  </div>
+  
+
+  <!-- Right side -->
+<div class="right">
+  <div class="form-container">
+    <h2>Sign in to Your Account</h2>
+
+    <!-- Django messages -->
+    <div class="messages" style="margin-bottom: 12px;">
+      {% if messages %}
+        {% for message in messages %}
+          <div style="color: {% if message.tags == 'error' %}#ef4444{% else %}#22c55e{% endif %}; font-size: 14px; margin-bottom: 6px;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="password" name="password" placeholder="Your Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+  </div>
+</div>
+

@@ -1,0 +1,276 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shortiurl — Shorten Links, Share Faster</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#6ee7b7;
+      --accent-2:#60a5fa;
+      --muted:#9aa6bf;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --success:#10b981;
+      --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0;
+      background:
+        radial-gradient(800px 400px at 10% 10%, rgba(96,165,250,0.08), transparent 10%),
+        radial-gradient(600px 300px at 90% 90%, rgba(110,231,183,0.06), transparent 10%),
+        linear-gradient(180deg, #071025 0%, #051022 100%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:48px auto;
+      padding:28px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* left: hero */
+    .hero{
+      padding:36px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 20px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:20px;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:800;
+      color:#07203a;font-size:20px;
+      box-shadow: 0 6px 18px rgba(96,165,250,0.12);
+    }
+    .brand h1{margin:0;font-size:20px}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+
+    .headline{
+      font-size:34px;
+      line-height:1.02;
+      margin:10px 0 14px;
+      font-weight:700;
+      letter-spacing:-0.02em;
+    }
+    .sub{
+      color:var(--muted);
+      margin-bottom:18px;
+      font-size:15px;
+    }
+
+    .features{
+      display:flex;
+      gap:12px;
+      margin-top:22px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      background:var(--glass);
+      padding:10px 14px;border-radius:12px;
+      font-size:13px;color:var(--muted);
+      display:flex;gap:10px;align-items:center;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .chip .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent-2))}
+
+    /* right: form card */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;padding:22px;border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+    .card h3{margin:0 0 10px;font-size:18px}
+    .input-row{display:flex;gap:10px;margin-bottom:12px}
+    .input{
+      background:var(--glass-2);border-radius:10px;padding:12px 14px;border:1px solid rgba(255,255,255,0.03);
+      color:inherit;font-size:14px;width:100%;
+      outline:none;transition:box-shadow .15s, transform .08s;
+    }
+    .input:focus{box-shadow:0 8px 30px rgba(96,165,250,0.08);transform:translateY(-2px)}
+    .small{font-size:12px;color:var(--muted);margin-bottom:8px}
+
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#062033;border:none;padding:12px 16px;border-radius:10px;font-weight:700;
+      cursor:pointer;font-size:15px;box-shadow:0 8px 20px rgba(96,165,250,0.12);
+    }
+    .btn.ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);
+    }
+    .result{
+      margin-top:16px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;align-items:center;justify-content:space-between;
+    }
+    .url-text{font-size:14px;color:#d9eefb;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .copy-btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;color:var(--muted);cursor:pointer}
+    .history{margin-top:18px}
+    .history h4{margin:0 0 8px;font-size:14px;color:var(--muted)}
+    .history-list{display:flex;flex-direction:column;gap:10px}
+    .history-item{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .small-muted{font-size:12px;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:960px){
+      .container{grid-template-columns:1fr; padding:18px}
+      .hero{order:2}
+      .card{order:1;margin-bottom:18px}
+      .headline{font-size:28px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with login/signup or username -->
+  <header style="padding:16px 32px;display:flex;justify-content:space-between;align-items:center;background:#071025;">
+    <div class="brand" style="gap:12px;display:flex;align-items:center;">
+      <div class="logo">S</div>
+      <div>
+        <h1 style="margin:0;font-size:20px;color:#fff;">Shortiurl</h1>
+        <p style="margin:0;color:#9aa6bf;font-size:12px;">Short links, fast sharing</p>
+      </div>
+    </div>
+    <nav style="display:flex;gap:18px;align-items:center;">
+      {% if user.is_authenticated %}
+        <span style="color:#fff;font-weight:500;">Hello, {{ user.username }}</span>
+        <a href="{% url 'logout' %}" style="color:#ef4444;text-decoration:none;">Logout</a>
+      {% else %}
+        <a href="{% url 'signin' %}" style="color:#60a5fa;text-decoration:none;">Sign In</a>
+        <a href="{% url 'signup' %}" style="color:#6ee7b7;text-decoration:none;">Sign Up</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <div class="container" role="main">
+    <!-- LEFT: Hero / Info -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <h1 id="hero-title">Shortiurl</h1>
+          <p>Short links. Fast sharing. Simple analytics.</p>
+        </div>
+      </div>
+
+      <h2 class="headline">Turn long messy links into short memorable URLs.</h2>
+      <p class="sub">Share quickly across socials, SMS, or chats. Create custom aliases, track clicks, and manage links from a beautiful dashboard.</p>
+
+      <div class="features" aria-hidden="true">
+        <div class="chip"><span class="dot"></span>Custom alias</div>
+        <div class="chip"><span class="dot"></span>Link management</div>
+        <div class="chip"><span class="dot"></span>Quick analytics</div>
+        <div class="chip"><span class="dot"></span>Secure & private</div>
+      </div>
+
+      <div class="history" id="history">
+        <h4>Your recent shortened links</h4>
+        <div class="history-list" id="historyList">
+          <!-- JS will populate -->
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Shorten form -->
+    <aside class="card" aria-labelledby="shorten-title">
+      <h3 id="shorten-title">Shorten a URL</h3>
+
+      <!-- Django Form -->
+      <form method="post" action="" id="shortenForm">
+        {% csrf_token %}
+        <div class="small">Paste your long URL below (https://...)</div>
+        <div style="margin-top:8px" class="input-row">
+          <input name="link" id="link" class="input" placeholder="https://example.com/very/long/url" aria-label="Long URL" required>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:12px;">
+          <button type="submit" id="shortenBtn" class="btn">Shorten</button>
+          <button type="reset" id="clearBtn" class="btn ghost">Clear</button>
+        </div>
+      </form>
+
+      <!-- Feedback messages -->
+      {% if shorter_url %}
+        <div id="resultWrap" class="result" role="region" aria-live="polite" style="display:flex; margin-top:12px;">
+          <div style="flex:1;min-width:0">
+            <div class="small-muted">Short URL</div>
+            <div class="url-text" id="shortUrlText">{{ shorter_url }}</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <a id="openBtn" class="copy-btn" href="{{ shorter_url }}" target="_blank">Open</a>
+            <button id="copyBtn" class="copy-btn" type="button">Copy</button>
+          </div>
+        </div>
+      {% endif %}
+    </aside>
+  </div>
+
+  <script>
+    // Copy button handler (only if result exists)
+    const copyBtn = document.getElementById('copyBtn');
+    if(copyBtn){
+      copyBtn.addEventListener('click', async ()=> {
+        const text = document.getElementById('shortUrlText').textContent.trim();
+        try{
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = 'Copied';
+          setTimeout(()=> copyBtn.textContent = 'Copy', 1500);
+        }catch(e){
+          alert("Copy failed, please copy manually");
+        }
+      });
+    }
+
+    // Render history from sessionStorage
+    function renderHistory(){
+      const historyList = document.getElementById('historyList');
+      const k = sessionStorage.getItem('short_history');
+      let list = k ? JSON.parse(k) : [];
+      historyList.innerHTML = '';
+      if(list.length===0){
+        historyList.innerHTML = `<div class="small-muted">No recent links yet. Shorten one to see it here.</div>`;
+        return;
+      }
+      for(const item of list){
+        const d = document.createElement('div');
+        d.className = 'history-item';
+        d.innerHTML = `
+          <div style="min-width:0;flex:1">
+            <div style="font-size:13px;color:#d5eefc;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${item.short}</div>
+            <div class="small-muted" style="margin-top:4px;overflow:hidden;text-overflow:ellipsis">${item.original}</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button class="copy-btn" data-url="${item.short}">Copy</button>
+            <a class="copy-btn" href="${item.short}" target="_blank" rel="noopener">Open</a>
+          </div>
+        `;
+        historyList.appendChild(d);
+      }
+    }
+    renderHistory();
+  </script>
+</body>
+</html>
