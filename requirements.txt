@@ -36,6 +36,7 @@ dnspython==2.8.0
 fastapi==0.115.12
 filelock==3.18.0
 fsspec==2025.5.1
+gunicorn
 h11==0.16.0
 html5lib==1.1
 idna==3.10
