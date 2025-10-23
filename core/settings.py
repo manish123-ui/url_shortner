@@ -67,24 +67,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=600)
 #DATABASES['default'] = dj_database_url.config(default='postgres://...'}
-DATABASES['default'].update(db_from_env)
+# DATABASE (PostgreSQL)
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR}/db.sqlite3")
+    )
+}
 
 AUTHENTICATION_BACKENDS = [
     'myapp.backends.EmailOrUsernameBackend',
@@ -145,7 +142,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #celery
-CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_BROKER_URL = os.getenv("REDIS_URL")
 #CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['application/json']
