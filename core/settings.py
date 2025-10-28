@@ -12,16 +12,22 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-
+import environ
+from environ import Env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
+env=Env()
+Env.read_env()
+ENVIRONMENT=env('ENVIRONMENT',default='production')
+if ENVIRONMENT=='development':
+    DEBUG = True
+else:
+    DEBUG = False
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!fos!i8(4)#hi+$th-5y5vjp4!i2d$92x9yfdua1)k)mphpv@7'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 AUTH_USER_MODEL = 'myapp.CustomUser'
@@ -36,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'django_celery_beat',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +74,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -82,10 +88,11 @@ DATABASES = {
     }
 }
 import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=600)
-#DATABASES['default'] = dj_database_url.config(default='postgres://...'}
-DATABASES['default'].update(db_from_env)
 
+#DATABASES['default'] = dj_database_url.config(default='postgres://...'}
+postiu=True
+if ENVIRONMENT=='production':
+ DATABASES['default']=dj_database_url.parse(env('DATABASE_URL'))
 AUTHENTICATION_BACKENDS = [
     'myapp.backends.EmailOrUsernameBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -108,20 +115,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-import dotenv
-from dotenv import load_dotenv
-
-load_dotenv() 
 #email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587    
-EMAIL_HOST_USER = os.getenv('EMAIL_ADDRESS')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_ADDRESS')
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL= f'shorturl{os.getenv("EMAIL_ADDRESS")}'
-
-
+DEFAULT_FROM_EMAIL= f'shorturl{env('EMAIL_ADDRESS')}'
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -145,7 +146,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #celery
-CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_BROKER_URL = env('REDIS_URL')
 #CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['application/json']
